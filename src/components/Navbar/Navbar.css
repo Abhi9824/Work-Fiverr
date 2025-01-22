@@ -1,0 +1,45 @@
+.nav-header{
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: var(--shadow);
+    color:var(--text-color) ;
+    font-size: 1.3rem;
+    font-weight: var(--font-bold);
+    
+}
+.navbar{
+    padding: 1.3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: nav;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    
+}
+
+.nav-header a {
+    text-decoration: none;
+    color: var(--text-color);
+    
+}
+
+.nav-header .nav_icon{
+    color: var(--logo-color);
+    font-size: 1.5rem;
+    margin-left: 0.2rem;
+}
+
+.nav-item{
+    display: flex;
+    gap:0.5rem
+}
+
+.nav-body{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 0px;
+}

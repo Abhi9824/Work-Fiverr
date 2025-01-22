@@ -1,0 +1,37 @@
+.sideBar{
+    grid-area: sidebar;
+    background-color: var(--light-color);
+    color: white;
+    padding: 2rem ;
+    font-size: 1.3rem;
+    position: sticky;
+    align-self: start;
+    top: 76px;
+    height: calc(100vh - 76px);
+
+}
+
+.side-list{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin: 0px;
+    padding: 0px;
+    /* align-items: center; */
+
+}
+.side-items{
+    transition: ease 0.2s;
+    cursor: pointer;
+    padding: 0.5rem;
+
+}
+
+.side-items:hover{
+    background-color: rgb(165, 165, 163);
+    color: black;
+    cursor: pointer;
+    font-size: 1.4rem;
+}

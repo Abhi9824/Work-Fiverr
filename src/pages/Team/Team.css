@@ -1,0 +1,43 @@
+.submitBtn{
+    background-color: var(--primary-color); 
+    color: var(--text-color);
+    border: none;
+    box-shadow: var(--shadow);
+  }
+
+
+
+  /* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(113, 114, 114, 0.5); /* Light background overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2; /* Lower z-index as requested */
+  }
+  
+  /* Modal dialog */
+  .modal-dialog {
+    max-width: 500px;          
+    width: 100%;               
+    margin: 0;                
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Modal content */
+  .modal-content {
+    background-color: var(--primary-color); /* Use your theme's primary color */
+    border-radius: 8px; /* Smooth corners */
+    padding: 20px; /* Internal spacing */
+    
+    background-color: var(--light-color);
+    color: white;
+  }
