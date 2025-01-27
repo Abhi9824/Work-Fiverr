@@ -21,7 +21,9 @@ const Home = () => {
   const navigate = useNavigate();
   const { projects, projectStatus } = useSelector((state) => state.project);
   const { tasks, taskStatus } = useSelector((state) => state.task);
-  const { user, status, users } = useSelector((state) => state.user);
+  const { user, status, users, isLoggedIn } = useSelector(
+    (state) => state.user
+  );
   const { teams, teamStatus } = useSelector((state) => state.team);
   const { tags, tagsStatus } = useSelector((state) => state.tags);
 
@@ -42,8 +44,6 @@ const Home = () => {
   const toggleModal = () => {
     setShowProjectModal(!showProjectModal);
   };
-  console.log("teams", teams);
-  console.log("tasks", tasks);
 
   const toggleTaskModal = () => {
     setTaskModal(!taskModal);

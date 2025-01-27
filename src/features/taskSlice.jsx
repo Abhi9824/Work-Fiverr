@@ -68,9 +68,6 @@ export const addTaskAsync = createAsyncThunk("tasks/add", async (taskData) => {
 export const updateTaskAsync = createAsyncThunk(
   "tasks/update",
   async ({ taskId, taskData }) => {
-    console.log("taskID updaete", taskId);
-    console.log("taskData updaete", taskData);
-
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Token is missing");
@@ -121,15 +118,25 @@ export const deleteTaskAsync = createAsyncThunk(
 export const filteredTaskAsync = createAsyncThunk(
   "tasks/filteredTask",
   async (filter) => {
+    console.log("filter", filter);
     try {
-      const response = await axios.get("/users/tasks", {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token is missing");
+
+      const response = await axios.get(`${api}/tasks`, {
         params: filter,
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
       });
 
       if (response) {
-        const response = response.data;
-        console.log("filtr", response.task);
-        return response.task;
+        const data = response.data;
+        console.log(response);
+        console.log("filtr", data);
+        return data;
       }
     } catch (error) {
       throw new Error("Failed to fetch the Task", error);

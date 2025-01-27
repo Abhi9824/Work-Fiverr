@@ -4,6 +4,7 @@ import taskSlice from "../features/taskSlice";
 import teamSlice from "../features/teamSlice";
 import userSlice from "../features/userSlice";
 import tagsSlice from "../features/tagsSlice";
+import toggleSlice from "../features/toggleSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     team: teamSlice,
     user: userSlice,
     tags: tagsSlice,
+    toggle: toggleSlice,
   },
 });

@@ -30,6 +30,7 @@ const ClosedTasksChart = ({ data, chartTitle }) => {
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
+        barThickness: 50,
       },
     ],
   };
@@ -41,13 +42,13 @@ const ClosedTasksChart = ({ data, chartTitle }) => {
         display: true,
         position: "top",
         labels: {
-          color: "white", // Set the legend text color to white
+          color: "white",
         },
       },
       title: {
         display: true,
-        text: chartTitle, // Display the chart title dynamically
-        color: "white", // Set the title text color to white
+        text: chartTitle,
+        color: "white",
       },
     },
     scales: {

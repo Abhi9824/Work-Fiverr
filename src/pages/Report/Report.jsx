@@ -56,47 +56,53 @@ const TaskReport = () => {
         </div>
         <div className="content">
           <h2 className="main-content-heading">Reports</h2>
+          <div className="container-fluid">
+            <div className="row py-2">
+              {/* task Completed last-week */}
 
-          {/* task Completed last-week */}
+              <div className="col-12 d-flex flex-column justify-content-center align-items-center py-4">
+                <h4>Task Completed Last-Week</h4>
+                <LastweekChart data={lastWeekReport} />
+              </div>
 
-          <div className="col-md-12 d-flex flex-column justify-content-center align-items-center py-4">
-            <h4>Task Completed Last-Week</h4>
-            <LastweekChart data={lastWeekReport} />
-          </div>
+              {/* task pending days */}
 
-          {/* task pending days */}
+              <div className="col-md-12 d-flex flex-column justify-content-center align-items-center py-4">
+                <h4>Total Days of Work Pending </h4>
+                <PendingTaskReport data={pendingTasksReport} />
+              </div>
 
-          <div className="col-md-12 d-flex flex-column justify-content-center align-items-center py-4">
-            <h4>Total Days of Work Pending </h4>
-            <PendingTaskReport data={pendingTasksReport} />
-          </div>
-
-          {/* closed task */}
-          <div className="col-md-12 d-flex flex-column justify-content-center align-items-center py-4">
-            <h4>Closed Tasks Report</h4>
-            {/* Buttons to toggle between project, owner, and team */}
-            <div className="py-4">
-              <button
-                className="btn btn-primary mx-2"
-                onClick={() => setSelectedGroup("project")}
-              >
-                By Project
-              </button>
-              <button
-                className="btn btn-primary mx-2"
-                onClick={() => setSelectedGroup("owner")}
-              >
-                By Owner
-              </button>
-              <button
-                className="btn btn-primary mx-2"
-                onClick={() => setSelectedGroup("team")}
-              >
-                By Team
-              </button>
+              {/* closed task */}
+              <div className="col-md-12 d-flex flex-column justify-content-center align-items-center py-4">
+                <h4>Closed Tasks Report</h4>
+                {/* Buttons to toggle between project, owner, and team */}
+                <div className="py-4">
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={() => setSelectedGroup("project")}
+                  >
+                    By Project
+                  </button>
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={() => setSelectedGroup("owner")}
+                  >
+                    By Owner
+                  </button>
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={() => setSelectedGroup("team")}
+                  >
+                    By Team
+                  </button>
+                </div>
+                {/* Pass data and chart title dynamically */}
+                <ClosedTasksChart
+                  data={dataToDisplay}
+                  chartTitle={chartTitle}
+                />
+              </div>
             </div>
-            {/* Pass data and chart title dynamically */}
-            <ClosedTasksChart data={dataToDisplay} chartTitle={chartTitle} />
           </div>
         </div>
       </div>

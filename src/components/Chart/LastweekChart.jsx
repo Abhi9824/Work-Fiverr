@@ -9,6 +9,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  defaults,
 } from "chart.js";
 
 ChartJS.register(
@@ -20,6 +21,8 @@ ChartJS.register(
   Legend
 );
 
+defaults.maintainAspectRatio = false;
+defaults.responsive = true;
 
 const LastweekChart = ({ data }) => {
   // Prepare data for Bar chart
@@ -32,6 +35,7 @@ const LastweekChart = ({ data }) => {
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
+        barThickness: 50,
       },
     ],
   };

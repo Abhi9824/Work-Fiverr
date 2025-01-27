@@ -21,11 +21,11 @@ const Login = () => {
   };
 
   const handleGuest = () => {
-    dispatch(loginUser({ email: "guest@gmail.com", password: "1234" })).then(
-      () => {
-        navigate(location?.state?.from?.pathname || "/");
-      }
-    );
+    dispatch(
+      loginUser({ email: "sourav@gmail.com", password: "sourav123" })
+    ).then(() => {
+      navigate(location?.state?.from?.pathname || "/");
+    });
   };
 
   const submitHandler = async (e) => {

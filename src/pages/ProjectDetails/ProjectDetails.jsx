@@ -4,7 +4,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { filteredTaskAsync } from "../../features/taskSlice";
+import { fetchAllTasks, filteredTaskAsync } from "../../features/taskSlice";
 import { getAllTagsAsync } from "../../features/tagsSlice";
 const { calculateDueDate } = require("../../utils/dateFormat");
 
@@ -17,75 +17,217 @@ const ProjectDetails = () => {
   const { tasks } = useSelector((state) => state.task);
   const { users } = useSelector((state) => state.user);
   const { tags } = useSelector((state) => state.tags);
+  const { teams } = useSelector((state) => state.team);
 
   // Local state
   const [owner, setOwner] = useState([]);
-  const [tag, setTag] = useState("");
+  const [tag, setTag] = useState([]);
+  const [stats, setStats] = useState("");
+  const [team, setTeam] = useState("");
+  // const [data, setData] = useState();
+  const [filtered, setFiltered] = useState([]);
 
-  // Fetch tags on component mount
+  // Reset handler
+  const resetHandler = async () => {
+    setOwner([]);
+    setTag([]);
+    setStats("");
+    setTeam("");
+    const filter = {
+      owner: [],
+      tags: "",
+      status: "",
+      team: "",
+      project: state,
+    };
+    const response = await dispatch(filteredTaskAsync(filter));
+    if (response?.payload) {
+      setFiltered(response.payload);
+    }
+  };
+
+  // Fetch tags and tasks once on mount
   useEffect(() => {
     dispatch(getAllTagsAsync());
+    dispatch(fetchAllTasks());
   }, [dispatch]);
 
-  // Fetch tasks with filters
+  const projectData = tasks?.filter(
+    (task) => task.project._id.toString() === projectId
+  );
+
+  // Update `filtered` state initially and when `projectData` changes
   useEffect(() => {
-    const filters = { projectId, owner, tag };
-    dispatch(filteredTaskAsync(filters));
-  }, [dispatch, projectId, owner, tag]);
+    if (!filtered.length && projectData?.length) {
+      setFiltered(projectData);
+    }
+  }, [projectData]);
 
   // Handle owner checkbox changes
   const ownerHandler = (e) => {
     const { value, checked } = e.target;
     setOwner((prev) =>
-      checked ? [...prev, value] : prev.filter((id) => id !== value)
+      checked ? [...prev, value] : prev.filter((name) => name !== value)
     );
   };
 
-  // Handle tag dropdown changes
+  // Handle tag selection
   const tagHandler = (e) => {
-    setTag(e.target.value);
+    const selectedTagId = e.target.value;
+    // const selectedTagName =
+    //   tags.find((tag) => tag._id === selectedTagId)?.name || "";
+
+    // setTag((prev) => {
+    //   if (selectedTagName && !prev.includes(selectedTagName)) {
+    //     return [...prev, selectedTagName];
+    //   } else if (selectedTagName) {
+    //     return prev.filter((t) => t !== selectedTagName);
+    //   }
+    //   return prev;
+    // });
+
+    setTag(selectedTagId);
+  };
+
+  // Filter handler
+  const filterHandler = async (e) => {
+    e.preventDefault();
+    const filter = {
+      owner: owner.length > 0 ? owner : [],
+      // tags: tag.length > 0 ? tag.join(",") : "",
+      tags: tag,
+      status: stats || "",
+      team: team || "",
+      project: state,
+    };
+
+    if (
+      !filter.owner.length === 0 &&
+      !filter.tags &&
+      !filter.status &&
+      !filter.team
+    ) {
+      // Reset to default project data when no filters
+      setFiltered(projectData);
+      return;
+    }
+
+    const response = await dispatch(filteredTaskAsync(filter));
+    if (response?.payload) {
+      setFiltered(response.payload);
+    }
+  };
+
+  const teamHandler = (e) => {
+    const selectedTeamId = e.target.value;
+    const selectedTeamName =
+      teams?.find((t) => t._id === selectedTeamId)?.name || "";
+    setTeam(selectedTeamName);
   };
 
   return (
     <div className="body">
       <div className="layout">
-        <Sidebar />
+        <div>
+          <Sidebar />
+        </div>
         <div className="content">
-          <h2 className="main-content-heading">{state?.name}</h2>
+          <h2 className="main-content-heading">{state}</h2>
+
           <div className="task-content">
             {/* Filters Section */}
             <div>
               <h3>Filters:</h3>
-              <div>
-                <label htmlFor="owners">Owners:</label>
-                {users?.map((user) => (
-                  <div key={user._id}>
-                    <input
-                      type="checkbox"
-                      id={`owner-${user._id}`}
-                      value={user._id}
-                      onChange={ownerHandler}
-                    />
-                    <label htmlFor={`owner-${user._id}`}>{user.name}</label>
+              <form onSubmit={filterHandler}>
+                <div className="d-flex justify-content-between ">
+                  <div>
+                    <div className="py-2 d-flex">
+                      <label htmlFor="owners">Owners:</label>
+                      {users?.map((user) => (
+                        //owners
+                        <div key={user._id} className="mx-2">
+                          <input
+                            type="checkbox"
+                            id={`owner-${user._id}`}
+                            value={user.name}
+                            onChange={ownerHandler}
+                            checked={owner.includes(user.name)}
+                            className="me-1"
+                          />
+                          <label htmlFor={`owner-${user._id}`}>
+                            {user.name}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* tags */}
+                    <div className="py-2">
+                      <label htmlFor="tags">Tags:</label>
+
+                      <select
+                        id="tags"
+                        value={tag}
+                        onChange={tagHandler}
+                        className="mx-2"
+                      >
+                        <option value="">All</option>
+                        {tags?.map((t) => (
+                          <option key={t._id} value={t.name}>
+                            {t.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="py-2">
+                      <label>Status: </label>
+                      <select
+                        value={stats}
+                        onChange={(e) => setStats(e.target.value)}
+                        className="mx-2"
+                        name="stats"
+                      >
+                        <option value="">All</option>
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Blocked">Blocked</option>
+                        <option value="Closed">Closed</option>
+                      </select>
+                    </div>
+
+                    <div className="py-2">
+                      <label htmlFor="team">Team:</label>
+                      <select id="team" onChange={teamHandler} className="mx-2">
+                        <option value="">All</option>
+                        {teams?.map((t) => (
+                          <option key={t._id} value={t._id}>
+                            {t.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                ))}
-              </div>
-              <div>
-                <label htmlFor="tags">Tags:</label>
-                <select id="tags" value={tag} onChange={tagHandler}>
-                  <option value="">All</option>
-                  {tags?.map((t) => (
-                    <option key={t._id} value={t._id}>
-                      {t.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  <div className="mt-2 d-flex justify-content-between align-items-center gap-2">
+                    <button type="submit" className="btn btn-primary">
+                      Filter
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={resetHandler}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
 
             {/* Tasks List Section */}
-            <h4>Tasks List:</h4>
-            {tasks && tasks.length > 0 ? (
+            <h4 className="pt-4">Tasks List:</h4>
+            {filtered?.length > 0 ? (
               <table className="table">
                 <thead>
                   <tr>
@@ -96,7 +238,7 @@ const ProjectDetails = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tasks.map((task) => {
+                  {filtered.map((task) => {
                     const dueDate = calculateDueDate(
                       task.createdAt,
                       task.timeToComplete
@@ -132,7 +274,7 @@ const ProjectDetails = () => {
                 </tbody>
               </table>
             ) : (
-              <p>No tasks available</p>
+              <p>No tasks available for this project.</p>
             )}
           </div>
         </div>
@@ -142,328 +284,3 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
-
-// import React, { useEffect, useState } from "react";
-// import "./ProjectDetails.css";
-// import Sidebar from "../../components/Sidebar/Sidebar";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useLocation, useParams } from "react-router";
-// import { Link } from "react-router-dom";
-// import { filteredTaskAsync } from "../../features/taskSlice";
-// import { getAllTagsAsync } from "../../features/tagsSlice";
-
-// const { calculateDueDate } = require("../../utils/dateFormat");
-
-// const ProjectDetails = () => {
-//   const { projectId } = useParams();
-//   const { state } = useLocation();
-//   const dispatch = useDispatch();
-
-//   const { tasks } = useSelector((state) => state.task);
-//   const { users } = useSelector((state) => state.user);
-//   const { tags } = useSelector((state) => state.tags);
-
-//   const [owner, setOwner] = useState([]);
-//   const [tag, setTag] = useState("");
-
-//   // Fetch tags and tasks initially
-//   useEffect(() => {
-//     dispatch(getAllTagsAsync());
-//   }, [dispatch]);
-
-//   // Fetch filtered tasks whenever filters change
-//   useEffect(() => {
-//     const filters = {
-//       projectId, // Pass projectId as part of the filter
-//       owner,
-//       tag,
-//     };
-//     dispatch(filteredTaskAsync(filters));
-//   }, [dispatch, projectId, owner, tag]);
-
-//   // Handle owner filter changes
-//   const ownerHandler = (e) => {
-//     const { value, checked } = e.target;
-//     if (checked) {
-//       setOwner((prev) => [...prev, value]);
-//     } else {
-//       setOwner((prev) => prev.filter((id) => id !== value));
-//     }
-//   };
-
-//   // Handle tag filter changes
-//   const tagHandler = (e) => {
-//     setTag(e.target.value);
-//   };
-
-//   return (
-//     <div className="body">
-//       <div className="layout">
-//         <Sidebar />
-//         <div className="content">
-//           <h2 className="main-content-heading">{state?.name}</h2>
-//           <div className="task-content">
-//             <div>
-//               <h3>Filters:</h3>
-
-//               <div>
-//                 <label htmlFor="owners">Owners:</label>
-//                 {users?.map((user) => (
-//                   <div key={user._id}>
-//                     <input
-//                       type="checkbox"
-//                       value={user._id}
-//                       onChange={ownerHandler}
-//                     />
-//                     {user.name}
-//                   </div>
-//                 ))}
-//               </div>
-
-//               <div>
-//                 <label htmlFor="tags">Tags:</label>
-//                 <select value={tag} onChange={tagHandler}>
-//                   <option value="">All</option>
-//                   {tags?.map((t) => (
-//                     <option key={t._id} value={t._id}>
-//                       {t.name}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-//             </div>
-
-//             <h4>Tasks List:</h4>
-//             {tasks && tasks.length > 0 ? (
-//               <table className="table">
-//                 <thead>
-//                   <tr>
-//                     <th scope="col" className="fs-5 fw-bold">
-//                       Task Name
-//                     </th>
-//                     <th scope="col" className="fs-5 fw-bold">
-//                       Status
-//                     </th>
-//                     <th scope="col" className="fs-5 fw-bold">
-//                       Due Date
-//                     </th>
-//                     <th scope="col" className="fs-5 fw-bold">
-//                       Owners
-//                     </th>
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {tasks.map((task) => {
-//                     const dueDate = calculateDueDate(
-//                       task.createdAt,
-//                       task.timeToComplete
-//                     );
-//                     return (
-//                       <tr key={task._id}>
-//                         <td>
-//                           <Link
-//                             to={`/taskDetails/${task._id}`}
-//                             className="text-decoration-none text-dark fw-bold pointer"
-//                           >
-//                             {task.name}
-//                           </Link>
-//                         </td>
-//                         <td>{task.status}</td>
-//                         <td>{dueDate}</td>
-//                         <td>
-//                           {task.owners.map((o, index) => (
-//                             <span key={o._id}>
-//                               <Link
-//                                 to={`/profile/${o._id}`}
-//                                 className="text-decoration-none text-dark fw-bold pointer"
-//                               >
-//                                 {o.name}
-//                               </Link>
-//                               {index < task.owners.length - 1 && ", "}
-//                             </span>
-//                           ))}
-//                         </td>
-//                       </tr>
-//                     );
-//                   })}
-//                 </tbody>
-//               </table>
-//             ) : (
-//               <p>No tasks available</p>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProjectDetails;
-
-// // import React, { useEffect, useState } from "react";
-// // import "./ProjectDetails.css";
-// // import Sidebar from "../../components/Sidebar/Sidebar";
-// // import { useDispatch, useSelector } from "react-redux";
-// // import { useLocation, useParams } from "react-router";
-// // import { Link } from "react-router-dom";
-// // import { fetchAllTasks, filteredTaskAsync } from "../../features/taskSlice";
-// // import Filters from "../../components/Filters/Filters";
-// // import { fetchAllTags } from "../../features/tagsSlice";
-
-// // const { calculateDueDate } = require("../../utils/dateFormat");
-
-// // const ProjectDetails = () => {
-// //   const { projectId } = useParams();
-// //   const { state } = useLocation();
-// //   const dispatch = useDispatch();
-
-// //   const { tasks } = useSelector((state) => state.task);
-// //   const { users } = useSelector((state) => state.user);
-// //   const { tags } = useSelector((state) => state.tags);
-
-// //   const [owner, setOwner] = useState([]);
-// //   const [tag, setTag] = useState("");
-
-// //   // Filter project tasks by project ID
-// //   let projectTasks = tasks?.filter((task) => task.project?._id === projectId);
-
-// //   console.log(projectTasks);
-// //   // Apply additional filters (owner, tag)
-// //   if (owner.length > 0) {
-// //     projectTasks = projectTasks.filter((task) =>
-// //       task.owners.some((o) => owner.includes(o._id))
-// //     );
-// //   }
-// //   if (tag) {
-// //     // projectTasks = projectTasks.filter((task) => task.tags.includes(tag));
-// //     projectTasks = projectTasks.filter((task) =>
-// //       task.tags.some((t) => t._id === tag)
-// //     );
-// //   }
-
-// //   // Handle owner filter changes
-// //   const ownerHandler = (e) => {
-// //     const { value, checked } = e.target;
-// //     if (checked) {
-// //       setOwner((prev) => [...prev, value]);
-// //     } else {
-// //       setOwner((prev) => prev.filter((id) => id !== value));
-// //     }
-// //   };
-
-// //   // Handle tag filter changes
-// //   const tagHandler = (e) => {
-// //     setTag(e.target.value);
-// //   };
-
-// //   useEffect(() => {
-// //     dispatch(fetchAllTasks());
-// //     dispatch(fetchAllTags());
-// //     dispatch(filteredTaskAsync())
-// //   }, [dispatch]);
-
-// //   return (
-// //     <div className="body">
-// //       <div className="layout">
-// //         <div>
-// //           <Sidebar />
-// //         </div>
-// //         <div className="content">
-// //           <h2 className="main-content-heading">{state?.name}</h2>
-// //           <div className="task-content">
-// //             <div>
-// //               <h3>Filters:</h3>
-
-// //               <div>
-// //                 <label htmlFor="owners">Owners:</label>
-// //                 {users?.map((user) => (
-// //                   <div key={user._id}>
-// //                     <input
-// //                       type="checkbox"
-// //                       value={user._id}
-// //                       onChange={ownerHandler}
-// //                     />
-// //                     {user.name}
-// //                   </div>
-// //                 ))}
-// //               </div>
-
-// //               <div>
-// //                 <label htmlFor="tags">Tags:</label>
-// //                 <select value={tag} onChange={tagHandler}>
-// //                   <option value="">All</option>
-// //                   {tags?.map((t) => (
-// //                     <option key={t._id} value={t._id}>
-// //                       {t.name}
-// //                     </option>
-// //                   ))}
-// //                 </select>
-// //               </div>
-// //             </div>
-
-// //             <h4>Tasks List:</h4>
-// //             {projectTasks && projectTasks.length > 0 ? (
-// //               <table className="table">
-// //                 <thead>
-// //                   <tr>
-// //                     <th scope="col" className="fs-5 fw-bold">
-// //                       Task Name
-// //                     </th>
-// //                     <th scope="col" className="fs-5 fw-bold">
-// //                       Status
-// //                     </th>
-// //                     <th scope="col" className="fs-5 fw-bold">
-// //                       Due Date
-// //                     </th>
-// //                     <th scope="col" className="fs-5 fw-bold">
-// //                       Owners
-// //                     </th>
-// //                   </tr>
-// //                 </thead>
-// //                 <tbody>
-// //                   {projectTasks.map((task) => {
-// //                     const dueDate = calculateDueDate(
-// //                       task.createdAt,
-// //                       task.timeToComplete
-// //                     );
-// //                     return (
-// //                       <tr key={task._id}>
-// //                         <td>
-// //                           <Link
-// //                             to={`/taskDetails/${task._id}`}
-// //                             className="text-decoration-none text-dark fw-bold pointer"
-// //                           >
-// //                             {task.name}
-// //                           </Link>
-// //                         </td>
-// //                         <td>{task.status}</td>
-// //                         <td>{dueDate}</td>
-// //                         <td>
-// //                           {task.owners.map((o, index) => (
-// //                             <span key={o._id}>
-// //                               <Link
-// //                                 to={`/profile/${o._id}`}
-// //                                 className="text-decoration-none text-dark fw-bold pointer"
-// //                               >
-// //                                 {o.name}
-// //                               </Link>
-// //                               {index < task.owners.length - 1 && ", "}
-// //                             </span>
-// //                           ))}
-// //                         </td>
-// //                       </tr>
-// //                     );
-// //                   })}
-// //                 </tbody>
-// //               </table>
-// //             ) : (
-// //               <p>No tasks available</p>
-// //             )}
-// //           </div>
-// //         </div>
-// //       </div>
-// //     </div>
-// //   );
-// // };
-
-// // export default ProjectDetails;

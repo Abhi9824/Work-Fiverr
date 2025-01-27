@@ -65,20 +65,14 @@
   height: 30px;
 }
 
-/* .content-descrition{
-  display: grid;
-  grid-area: "desc";
-}
-.content-desc{
-  grid-area: desc;
-} */
+
+/* side bar toggle */
 
 /* smaller screen */
 @media (max-width: 800px) {
   .container {
-    grid-template-columns: 1fr; /* Single column for the entire layout */
-    /* grid-template-rows: auto 1fr; Navbar remains at the top, rest is scrollable */
-    grid-template-areas: 
+    grid-template-columns: 1fr; 
+      grid-template-areas: 
       "nav"
       "body";
   }
@@ -99,11 +93,10 @@
 
   .sideBar {
     grid-area: sidebar;
-    background-color: #444; /* Sidebar background for distinction */
+    background-color: #444; 
     padding: 1rem;
     width: 100%; /* Full width on smaller screens */
-    height: auto; /* Sidebar adjusts height to its content */
-    /* display: none; */
+    height: auto; 
     position: sticky;
     top: 100vh - 76px;
 
@@ -112,5 +105,29 @@
   .content {
     grid-area: content;
     width: 100%; 
+  }
+}
+
+/* Default button styling */
+.hamburger {
+  display: none; /* Hidden by default */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+
+/* Button visible only on small screens */
+@media (max-width: 800px) {
+  .hamburger {
+    display: block; /* Show button */
+    color: white; /* Button text color */
+    background-color: var(--primary-color);
+    border-radius: 5px;
+  }
+
+  .hamburger:hover {
+    background-color: var(--hover-secondary-color);
   }
 }

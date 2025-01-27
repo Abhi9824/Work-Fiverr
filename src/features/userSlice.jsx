@@ -96,7 +96,7 @@ const userSlice = createSlice({
   },
   reducers: {
     logoutUser: (state) => {
-      localStorage.removeItem("token");
+      localStorage.removeItem("token"); 
       state.token = null;
       state.user = {};
       state.isLoggedIn = false;
