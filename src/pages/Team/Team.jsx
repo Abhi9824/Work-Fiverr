@@ -44,11 +44,6 @@ const Team = () => {
       .then(dispatch(fetchAllTeams()));
   };
 
-  const handleDelete = (teamId) => {
-    // Dispatch the delete action with the team ID
-    dispatch(deleteTaskAsync(teamId));
-  };
-
   const handleEdit = (teamId) => {
     const selectedTeam = teams.find((team) => team._id === teamId);
     if (selectedTeam) {
@@ -113,14 +108,6 @@ const Team = () => {
                               className="editBtn"
                             >
                               <BiEdit className="icon" />
-                            </button>
-                          </div>
-                          <div>
-                            <button
-                              className="editBtn"
-                              onClick={() => handleDelete(team?._id)}
-                            >
-                              <MdDeleteOutline className="icon" />
                             </button>
                           </div>
                         </>
