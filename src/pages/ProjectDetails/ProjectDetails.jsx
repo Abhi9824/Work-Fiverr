@@ -12,19 +12,14 @@ const ProjectDetails = () => {
   const { projectId } = useParams();
   const { state } = useLocation();
   const dispatch = useDispatch();
-
-  // Redux state
   const { tasks } = useSelector((state) => state.task);
   const { users } = useSelector((state) => state.user);
   const { tags } = useSelector((state) => state.tags);
   const { teams } = useSelector((state) => state.team);
-
-  // Local state
   const [owner, setOwner] = useState([]);
   const [tag, setTag] = useState([]);
   const [stats, setStats] = useState("");
   const [team, setTeam] = useState("");
-  // const [data, setData] = useState();
   const [filtered, setFiltered] = useState([]);
 
   // Reset handler
@@ -74,18 +69,6 @@ const ProjectDetails = () => {
   // Handle tag selection
   const tagHandler = (e) => {
     const selectedTagId = e.target.value;
-    // const selectedTagName =
-    //   tags.find((tag) => tag._id === selectedTagId)?.name || "";
-
-    // setTag((prev) => {
-    //   if (selectedTagName && !prev.includes(selectedTagName)) {
-    //     return [...prev, selectedTagName];
-    //   } else if (selectedTagName) {
-    //     return prev.filter((t) => t !== selectedTagName);
-    //   }
-    //   return prev;
-    // });
-
     setTag(selectedTagId);
   };
 
@@ -94,7 +77,6 @@ const ProjectDetails = () => {
     e.preventDefault();
     const filter = {
       owner: owner.length > 0 ? owner : [],
-      // tags: tag.length > 0 ? tag.join(",") : "",
       tags: tag,
       status: stats || "",
       team: team || "",

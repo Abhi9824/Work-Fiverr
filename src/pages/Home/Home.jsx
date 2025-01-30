@@ -71,11 +71,15 @@ const Home = () => {
       name: name,
       description: description,
     };
-    await dispatch(addProjectAsync(projectData)).then(() => {
-      toggleModal();
-      setDescription("");
-      setName("");
-    });
+    await dispatch(addProjectAsync(projectData))
+      .unwrap()
+      .then(() => {
+        dispatch(fetchAllProjects());
+        toggleModal();
+        setDescription("");
+        setName("");
+      })
+      .catch((error) => console.error("Error adding project:", error));
   };
 
   const handleTeamChange = async (e) => {
@@ -150,7 +154,7 @@ const Home = () => {
           setEditDescription("");
           setEditingProjectId(null);
         })
-        .then(() => dispatch(fetchAllProjects()));
+        .then(dispatch(fetchAllProjects()));
     }
   };
 
@@ -190,13 +194,6 @@ const Home = () => {
                 typeof project?.createdBy === "object"
                   ? project?.createdBy?._id
                   : project?.createdBy;
-
-              console.log("project createdBy:", createdById);
-              console.log("User ID:", user?._id);
-              console.log(
-                "Comparison result:",
-                String(createdById) === String(user?._id)
-              );
               return (
                 <div className="col-md-4 mb-3" key={project?._id}>
                   <div className="card mb-3">

@@ -20,13 +20,12 @@ ChartJS.register(
 );
 
 const ClosedTasksChart = ({ data, chartTitle }) => {
-  // Prepare data for Bar chart
   const chartData = {
-    labels: data?.map((item) => item.groupName), // Labels like "Team A", "Owner1", etc.
+    labels: data?.map((item) => item.groupName), 
     datasets: [
       {
         label: "Closed Tasks Count",
-        data: data?.map((item) => item.taskCount), // Task counts
+        data: data?.map((item) => item.taskCount),
         backgroundColor: "rgba(75, 192, 192, 0.6)",
         borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,

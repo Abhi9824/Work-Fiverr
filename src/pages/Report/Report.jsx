@@ -17,15 +17,13 @@ const TaskReport = () => {
     projectClosedTasks,
     ownerClosedTasks,
     teamClosedTasks,
-    taskStatus,
     pendingTasksReport,
-    taskError,
     lastWeekReport,
   } = useSelector((state) => state.task);
   // State for managing which group is selected
   const [selectedGroup, setSelectedGroup] = useState("project");
 
-  // Choose the data based on selected group
+  // choosing the data based on selected group
   let dataToDisplay = [];
   let chartTitle = "";
   if (selectedGroup === "project") {

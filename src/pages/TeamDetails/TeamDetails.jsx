@@ -2,10 +2,11 @@ import React from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import "./TeamDetails.css";
 
 const TeamDetails = () => {
   const { teamId } = useParams();
-  const { teams, teamStatus } = useSelector((state) => state.team);
+  const { teams } = useSelector((state) => state.team);
 
   const teamData = teams?.find((team) => team._id === teamId);
   return (

@@ -9,17 +9,16 @@ import {
   addTaskAsync,
   deleteTaskAsync,
   fetchAllTasks,
-  fetchTasksAsync,
   updateTaskAsync,
 } from "../../features/taskSlice";
 import { fetchAllTeams } from "../../features/teamSlice";
 
 const Task = () => {
   const dispatch = useDispatch();
-  const { tasks, taskStatus } = useSelector((state) => state?.task);
-  const { projects, projectStatus } = useSelector((state) => state?.project);
-  const { teams, teamStatus } = useSelector((state) => state?.team);
-  const { users, status, user } = useSelector((state) => state?.user);
+  const { tasks } = useSelector((state) => state?.task);
+  const { projects } = useSelector((state) => state?.project);
+  const { teams } = useSelector((state) => state?.team);
+  const { users, user } = useSelector((state) => state?.user);
   const { tags } = useSelector((state) => state?.tags);
   const [taskModal, setTaskModal] = useState(false);
   const [taskName, setTaskName] = useState("");
@@ -46,7 +45,7 @@ const Task = () => {
   const toggleTaskModal = () => {
     setTaskModal(!taskModal);
   };
- 
+
   const handleTeamChange = (e) => {
     const selectedTeam = teams.find((team) => team._id === e.target.value);
     setTeamName(selectedTeam);
@@ -55,7 +54,7 @@ const Task = () => {
   //editTeamName
   const handleEditTeamChange = (e) => {
     const selectedTeam = teams.find((team) => team._id === e.target.value);
-    setEditTeamName(selectedTeam); 
+    setEditTeamName(selectedTeam);
   };
 
   const toggleEditModal = () => {
@@ -75,7 +74,7 @@ const Task = () => {
       !tag
     ) {
       console.log("Missing required fields");
-      return; 
+      return;
     }
     const taskData = {
       name: taskName,
@@ -89,8 +88,8 @@ const Task = () => {
     };
     try {
       await dispatch(addTaskAsync(taskData)).unwrap();
-      dispatch(fetchAllTasks()); 
-      toggleTaskModal(); 
+      dispatch(fetchAllTasks());
+      toggleTaskModal();
       setTaskName("");
       setTeamName([]);
       setOwners([]);
@@ -142,7 +141,6 @@ const Task = () => {
           updateTaskAsync({ taskId: editingTaskId, taskData: updatedTaskData })
         ).unwrap();
         await dispatch(fetchAllTasks()).unwrap();
-
         toggleEditModal();
         setEditingTaskId(null);
       } catch (error) {
@@ -150,7 +148,7 @@ const Task = () => {
       }
     }
   };
-  //side effects
+
   useEffect(() => {
     dispatch(fetchAllTeams());
 
@@ -267,7 +265,6 @@ const Task = () => {
                     <select
                       name="team"
                       id="team"
-                      // onChange={(e) => setTeamName(e.target.value)}
                       onChange={(e) => handleTeamChange(e)}
                       className="form-select"
                       value={teamName?._id}
@@ -344,17 +341,16 @@ const Task = () => {
                                 setTag((prevTags) => [
                                   ...prevTags,
                                   tagItem._id,
-                                ]); // Add selected tag ID
+                                ]);
                               } else {
-                                setTag(
-                                  (prevTags) =>
-                                    prevTags.filter(
-                                      (tagId) => tagId !== tagItem._id
-                                    ) 
+                                setTag((prevTags) =>
+                                  prevTags.filter(
+                                    (tagId) => tagId !== tagItem._id
+                                  )
                                 );
                               }
                             }}
-                            checked={tag.includes(tagItem._id)} 
+                            checked={tag.includes(tagItem._id)}
                           />
                           <label
                             htmlFor={`tag-${tagItem._id}`}

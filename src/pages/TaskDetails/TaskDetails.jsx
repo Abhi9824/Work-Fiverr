@@ -1,19 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./TaskDetails.css";
-import { useParams, useLocation } from "react-router";
+import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { calculateRemainingDays } from "../../utils/dateFormat";
-import {
-  updateTaskAsync,
-  fetchTasksAsync,
-  fetchAllTasks,
-} from "../../features/taskSlice";
+import { updateTaskAsync, fetchAllTasks } from "../../features/taskSlice";
 
 const TaskDetails = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
-  const { tasks, taskStatus } = useSelector((state) => state.task);
+  const { tasks } = useSelector((state) => state.task);
   const { user } = useSelector((state) => state.user);
 
   const taskData = tasks?.find((task) => task?._id === taskId);

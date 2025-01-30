@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { Link } from "react-router";
 import "./Profile.css";
 import { logoutUser } from "../../features/userSlice";
 
@@ -10,10 +9,7 @@ const Profile = () => {
   const { user, users } = useSelector((state) => state?.user);
   const { profileId } = useParams();
   const dispatch = useDispatch();
-
   const profileData = users?.find((user) => user?._id === profileId);
-  console.log("user", user);
-
   const logoutHandler = () => {
     if (profileData?._id === user?._id) {
       dispatch(logoutUser());

@@ -54,14 +54,11 @@ export const addProjectAsync = createAsyncThunk(
 export const updateProjectAsync = createAsyncThunk(
   "project/updateProject",
   async ({ projectId, projectData }) => {
-    console.log("Updating project with ID:", projectId, "Data:", projectData);
-
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("User is not authenticated.Token is missing");
       }
-      console.log("api", api);
       const response = await axios.put(
         `${api}/project/updateProject/${projectId}`,
         projectData,
@@ -85,7 +82,6 @@ export const updateProjectAsync = createAsyncThunk(
 export const deleteProjectAsync = createAsyncThunk(
   "project/deleteProject",
   async (projectId) => {
-    console.log("id", projectId);
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -103,7 +99,6 @@ export const deleteProjectAsync = createAsyncThunk(
       );
       if (response.status === 200) {
         const data = response.data;
-        console.log(data);
         return data.project;
       }
     } catch (error) {
