@@ -17,8 +17,6 @@ export const fetchAllTasks = createAsyncThunk(
       });
       if (response) {
         const data = response.data;
-        console.log("fetchAllTasks", data.task);
-
         return data.task;
       }
     } catch (error) {
@@ -38,15 +36,12 @@ export const fetchTasksAsync = createAsyncThunk("tasks/fetchAll", async () => {
     },
   });
   if (response) {
-    console.log("fetchTaskById", response.data.task);
-
     return response.data.task;
   }
 });
 
 export const addTaskAsync = createAsyncThunk("tasks/add", async (taskData) => {
   try {
-    console.log("asyndata", taskData);
     const token = localStorage.getItem("token");
     if (!token) throw new Error("Token is missing");
 
@@ -84,7 +79,6 @@ export const updateTaskAsync = createAsyncThunk(
       );
       if (response.status === 200) {
         const data = response.data;
-        console.log("updateed data", data.task);
         return data.task;
       }
     } catch (error) {
@@ -118,7 +112,6 @@ export const deleteTaskAsync = createAsyncThunk(
 export const filteredTaskAsync = createAsyncThunk(
   "tasks/filteredTask",
   async (filter) => {
-    console.log("filter", filter);
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Token is missing");
@@ -134,8 +127,6 @@ export const filteredTaskAsync = createAsyncThunk(
 
       if (response) {
         const data = response.data;
-        console.log(response);
-        console.log("filtr", data);
         return data;
       }
     } catch (error) {
@@ -150,7 +141,6 @@ export const fetchLastWeekReport = createAsyncThunk(
     try {
       const response = await axios.get(`${api}/report/last-week`);
       if (response.status === 200) {
-        console.log("last-week", response.data);
         return response.data.report;
       }
     } catch (error) {
@@ -166,8 +156,6 @@ export const fetchPendingTasksReport = createAsyncThunk(
     try {
       const response = await axios.get(`${api}/report/pending`);
       if (response.status === 200) {
-        console.log("pending", response.data);
-
         return response.data.report.data;
       }
     } catch (error) {

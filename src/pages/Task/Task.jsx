@@ -46,20 +46,16 @@ const Task = () => {
   const toggleTaskModal = () => {
     setTaskModal(!taskModal);
   };
-  //debug team
+ 
   const handleTeamChange = (e) => {
     const selectedTeam = teams.find((team) => team._id === e.target.value);
-    // await setEditTeamName(selectedTeam); // Now we store the team
     setTeamName(selectedTeam);
-    // object with its ID
-    console.log("Selected Team ID:", selectedTeam._id); // Log the selected team ID
   };
 
   //editTeamName
   const handleEditTeamChange = (e) => {
     const selectedTeam = teams.find((team) => team._id === e.target.value);
-    setEditTeamName(selectedTeam); // Now we store the team
-    console.log("Selected Team ID:", selectedTeam._id); // Log the
+    setEditTeamName(selectedTeam); 
   };
 
   const toggleEditModal = () => {
@@ -79,7 +75,7 @@ const Task = () => {
       !tag
     ) {
       console.log("Missing required fields");
-      return; // Exit early if any field is missing
+      return; 
     }
     const taskData = {
       name: taskName,
@@ -92,10 +88,9 @@ const Task = () => {
       status: stats,
     };
     try {
-      // Wait for the task to be added before fetching all tasks
       await dispatch(addTaskAsync(taskData)).unwrap();
-      dispatch(fetchAllTasks()); // Fetch updated tasks
-      toggleTaskModal(); // Close modal after task is added
+      dispatch(fetchAllTasks()); 
+      toggleTaskModal(); 
       setTaskName("");
       setTeamName([]);
       setOwners([]);
@@ -121,7 +116,6 @@ const Task = () => {
       setEditTeamName(selectedTask.team);
       setEditOwners(selectedTask.owners?.map((owner) => owner._id) || []);
       setEditTag(selectedTask.tags?.map((tag) => tag._id) || []);
-      // setEditDue(selectedTask.createdAt);
       setEditDue(new Date(selectedTask.createdAt).toISOString().split("T")[0]);
       setEditTimeToComplete(selectedTask.timeToComplete || "");
       setEditStats(selectedTask.status || "To Do");
@@ -356,11 +350,11 @@ const Task = () => {
                                   (prevTags) =>
                                     prevTags.filter(
                                       (tagId) => tagId !== tagItem._id
-                                    ) // Remove unselected tag ID
+                                    ) 
                                 );
                               }
                             }}
-                            checked={tag.includes(tagItem._id)} // Check against local `tag` state
+                            checked={tag.includes(tagItem._id)} 
                           />
                           <label
                             htmlFor={`tag-${tagItem._id}`}

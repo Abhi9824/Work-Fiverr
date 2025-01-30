@@ -47,13 +47,12 @@ const LastweekChart = ({ data }) => {
         display: true,
         position: "top",
         labels: {
-          color: "white", // Set the legend text color to white
+          color: "white", 
         },
       },
       title: {
         display: true,
-        // text: report, // Display the chart title dynamically
-        color: "white", // Set the title text color to white
+        color: "white", 
       },
     },
     scales: {

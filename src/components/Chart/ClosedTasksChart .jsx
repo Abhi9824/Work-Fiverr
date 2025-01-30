@@ -54,19 +54,19 @@ const ClosedTasksChart = ({ data, chartTitle }) => {
     scales: {
       x: {
         ticks: {
-          color: "white", // Set x-axis ticks text color to white
+          color: "white", 
         },
         border: {
-          color: "white", // Set x-axis line color to white
+          color: "white", 
         },
       },
       y: {
         ticks: {
-          color: "white", // Set y-axis ticks text color to white
+          color: "white", 
         },
 
         border: {
-          color: "white", // Set y-axis line color to white
+          color: "white", 
         },
       },
     },

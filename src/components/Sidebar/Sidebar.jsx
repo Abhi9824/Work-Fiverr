@@ -17,13 +17,13 @@ const Sidebar = () => {
 
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-  // Detect screen size and update state
+  // to detect screen size and update state
   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth > 800); 
+      setIsLargeScreen(window.innerWidth > 800);
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);

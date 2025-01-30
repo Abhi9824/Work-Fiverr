@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { addTeamAsync, fetchAllTeams } from "../../features/teamSlice";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 import "./Team.css";
 import { updateTeamAsync } from "../../features/teamSlice";
+import { deleteTaskAsync } from "../../features/taskSlice";
 
 const Team = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { teams, teamStatus } = useSelector((state) => state.team);
+  const { teams } = useSelector((state) => state.team);
   const { user } = useSelector((state) => state.user);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [name, setName] = useState("");
@@ -20,8 +20,6 @@ const Team = () => {
   const [editDescription, setEditDescription] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingTeamId, setEditingTeamId] = useState(null);
-
-  console.log("teamsss", teams);
 
   const toggleModal = () => {
     setShowProjectModal(!showProjectModal);
@@ -48,7 +46,7 @@ const Team = () => {
 
   const handleDelete = (teamId) => {
     // Dispatch the delete action with the team ID
-    // dispatch(deletTea(teamId));
+    dispatch(deleteTaskAsync(teamId));
   };
 
   const handleEdit = (teamId) => {

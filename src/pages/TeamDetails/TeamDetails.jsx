@@ -8,7 +8,6 @@ const TeamDetails = () => {
   const { teams, teamStatus } = useSelector((state) => state.team);
 
   const teamData = teams?.find((team) => team._id === teamId);
-  console.log("teamData", teamData);
   return (
     <div className="body">
       <div className="layout">

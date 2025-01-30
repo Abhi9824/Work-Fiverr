@@ -1,5 +1,6 @@
 import { BASE_URL } from "../utils/baseUrl";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const api = `${BASE_URL}/users`;
 
@@ -94,6 +95,7 @@ const teamSlice = createSlice({
       })
       .addCase(addTeamAsync.fulfilled, (state, action) => {
         state.teams.push(action.payload);
+        toast.success("Team added");
       })
       .addCase(updateTeamAsync.pending, (state) => {
         state.teamStatus = "loading";
@@ -107,6 +109,7 @@ const teamSlice = createSlice({
         if (existingIndex !== -1) {
           state.teams[existingIndex] = updatedTeam;
         }
+        toast.success("Team updated successfully");
       })
       .addCase(updateTeamAsync.rejected, (state, action) => {
         state.teamStatus = "failed";

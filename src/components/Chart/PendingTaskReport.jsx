@@ -43,38 +43,36 @@ const PendingTaskReport = ({ data }) => {
         display: true,
         position: "top",
         labels: {
-          color: "white", // Set the legend text color to white
+          color: "white",
         },
       },
       title: {
         display: true,
-        // text: report, // Display the chart title dynamically
-        color: "white", // Set the title text color to white
+        color: "white",
       },
     },
     scales: {
       x: {
         ticks: {
-          color: "white", // Set x-axis ticks text color to white
+          color: "white",
         },
         border: {
-          color: "white", // Set x-axis line color to white
+          color: "white",
         },
       },
       y: {
         ticks: {
-          color: "white", // Set y-axis ticks text color to white
+          color: "white",
         },
 
         border: {
-          color: "white", // Set y-axis line color to white
+          color: "white",
         },
       },
     },
   };
 
   return (
-    // <div style={{ width: "100%", height: "500px" }}>
     <div className="chart-container">
       <div className="chart-wrapper">
         <Bar data={chartData} options={options} />

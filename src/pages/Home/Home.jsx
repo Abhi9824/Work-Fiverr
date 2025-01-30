@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addProjectAsync, fetchAllProjects } from "../../features/projectSlice";
+import { updateProjectAsync } from "../../features/projectSlice";
+import {
+  addProjectAsync,
+  deleteProjectAsync,
+  fetchAllProjects,
+} from "../../features/projectSlice";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router";
+import { BiEdit } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
 import {
   addTaskAsync,
   fetchAllTasks,
@@ -18,7 +25,6 @@ const { calculateDueDate } = require("../../utils/dateFormat");
 const Home = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const navigate = useNavigate();
   const { projects, projectStatus } = useSelector((state) => state.project);
   const { tasks, taskStatus } = useSelector((state) => state.task);
   const { user, status, users, isLoggedIn } = useSelector(
@@ -41,6 +47,16 @@ const Home = () => {
   const [stats, setStats] = useState("To Do");
   const [project, setProject] = useState("");
 
+  //Edit and delete states
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingProjectId, setEditingProjectId] = useState(null);
+
+  const toggleEditModal = () => {
+    setShowEditModal(!showEditModal);
+  };
+
   const toggleModal = () => {
     setShowProjectModal(!showProjectModal);
   };
@@ -62,11 +78,9 @@ const Home = () => {
     });
   };
 
-  //debug team
   const handleTeamChange = async (e) => {
     const selectedTeam = teams.find((team) => team._id === e.target.value);
-    await setTeamName(selectedTeam); // Now we store the team object with its ID
-    console.log("Selected Team ID:", selectedTeam._id); // Log the selected team ID
+    await setTeamName(selectedTeam);
   };
 
   const taskSubmitHandler = async (e) => {
@@ -82,7 +96,7 @@ const Home = () => {
       !tag
     ) {
       console.log("Missing required fields");
-      return; // Exit early if any field is missing
+      return;
     }
     const taskData = {
       name: taskName,
@@ -94,8 +108,8 @@ const Home = () => {
       timeToComplete: Number(timeToComplete),
       status: stats,
     };
-    console.log("taskdata", taskData);
     await dispatch(addTaskAsync(taskData))
+      .then(dispatch(fetchTasksAsync()))
       .then(() => {
         toggleTaskModal();
         setTaskName("");
@@ -105,15 +119,49 @@ const Home = () => {
         setDue("");
         setTimeToComplete("");
         setStats("To Do");
-      })
-      .then(dispatch(fetchTasksAsync()));
+      });
+  };
+
+  const handleEdit = (projectId) => {
+    const selectedProject = projects.find(
+      (project) => project._id === projectId
+    );
+    if (selectedProject) {
+      setEditName(selectedProject.name);
+      setEditDescription(selectedProject.description);
+      setEditingProjectId(projectId);
+      toggleEditModal();
+    }
+  };
+
+  const editProjectSubmitHandler = async (e) => {
+    e.preventDefault();
+    if (editingProjectId) {
+      const updatedProject = { name: editName, description: editDescription };
+      await dispatch(
+        updateProjectAsync({
+          projectId: editingProjectId,
+          projectData: updatedProject,
+        })
+      )
+        .then(() => {
+          toggleEditModal();
+          setEditName("");
+          setEditDescription("");
+          setEditingProjectId(null);
+        })
+        .then(() => dispatch(fetchAllProjects()));
+    }
+  };
+
+  const handleDelete = (projectId) => {
+    dispatch(deleteProjectAsync(projectId));
   };
 
   useEffect(() => {
     dispatch(fetchAllProjects());
     dispatch(fetchAllTeams());
     dispatch(fetchTasksAsync());
-    // dispatch(fetchAllTasks());
   }, []);
 
   useEffect(() => {
@@ -127,8 +175,7 @@ const Home = () => {
     if (tagsStatus === "idle") {
       dispatch(getAllTagsAsync());
     }
-  }, [dispatch, users, tags]);
-
+  }, [dispatch, users, tags, user]);
   return (
     <div className="body">
       <div className="layout">
@@ -139,6 +186,17 @@ const Home = () => {
           <h2 className="main-content-heading">Dashboard</h2>
           <div className="content-desc d-flex row py-3 col-md-12">
             {projects?.map((project) => {
+              const createdById =
+                typeof project?.createdBy === "object"
+                  ? project?.createdBy?._id
+                  : project?.createdBy;
+
+              console.log("project createdBy:", createdById);
+              console.log("User ID:", user?._id);
+              console.log(
+                "Comparison result:",
+                String(createdById) === String(user?._id)
+              );
               return (
                 <div className="col-md-4 mb-3" key={project?._id}>
                   <div className="card mb-3">
@@ -151,6 +209,29 @@ const Home = () => {
                         <h5>{project?.name}</h5>
                         <p className="fw-light">{project?.description}</p>
                       </Link>
+                      <div className="d-flex justify-content-between mt-3 gap-2">
+                        {isLoggedIn &&
+                          String(createdById) === String(user?._id) && (
+                            <>
+                              <div>
+                                <button
+                                  onClick={() => handleEdit(project?._id)}
+                                  className="editBtn"
+                                >
+                                  <BiEdit className="icon" />
+                                </button>
+                              </div>
+                              <div>
+                                <button
+                                  className="editBtn"
+                                  onClick={() => handleDelete(project?._id)}
+                                >
+                                  <MdDeleteOutline className="icon" />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -453,6 +534,48 @@ const Home = () => {
                     name="description"
                     className="form-control mb-3"
                     placeholder="Write project description"
+                  />
+
+                  <button type="submit" className="submitBtn mt-2 form-control">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* project edit modal */}
+      {showEditModal && (
+        <div className="modal d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Edit Team</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={toggleEditModal}
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={editProjectSubmitHandler}>
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    name="name"
+                    className="form-control mb-3"
+                    placeholder="Edit team name"
+                  />
+                  <input
+                    type="text"
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                    name="description"
+                    className="form-control mb-3"
+                    placeholder="Edit team description"
                   />
 
                   <button type="submit" className="submitBtn mt-2 form-control">

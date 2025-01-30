@@ -15,7 +15,6 @@ export const fetchAllProjects = createAsyncThunk(
       });
       if (response.status === 200) {
         const data = response.data;
-        console.log("fetchALlProject", data);
         return data.project;
       }
     } catch (error) {
@@ -32,7 +31,6 @@ export const addProjectAsync = createAsyncThunk(
       if (!token) {
         throw new Error("User is not authenticated.Token is missing");
       }
-      console.log("projectadta", projectData);
       const response = await axios.post(
         `${api}/project/addProject`,
         projectData,
@@ -45,8 +43,6 @@ export const addProjectAsync = createAsyncThunk(
       );
       if (response.status === 200) {
         const data = response.data;
-        console.log("data", data);
-
         return data.project;
       }
     } catch (error) {
@@ -58,13 +54,16 @@ export const addProjectAsync = createAsyncThunk(
 export const updateProjectAsync = createAsyncThunk(
   "project/updateProject",
   async ({ projectId, projectData }) => {
+    console.log("Updating project with ID:", projectId, "Data:", projectData);
+
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("User is not authenticated.Token is missing");
       }
+      console.log("api", api);
       const response = await axios.put(
-        `${api}/project/updateproject/${projectId}`,
+        `${api}/project/updateProject/${projectId}`,
         projectData,
         {
           headers: {
@@ -78,7 +77,7 @@ export const updateProjectAsync = createAsyncThunk(
         return data.project;
       }
     } catch (error) {
-      throw new Error("Failed to add Project");
+      throw new Error("Failed to update Project");
     }
   }
 );
@@ -86,13 +85,14 @@ export const updateProjectAsync = createAsyncThunk(
 export const deleteProjectAsync = createAsyncThunk(
   "project/deleteProject",
   async (projectId) => {
+    console.log("id", projectId);
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("User is not authenticated.Token is missing");
       }
       const response = await axios.delete(
-        `${api}/project/updateproject/${projectId}`,
+        `${api}/project/deleteProject/${projectId}`,
 
         {
           headers: {
@@ -103,10 +103,11 @@ export const deleteProjectAsync = createAsyncThunk(
       );
       if (response.status === 200) {
         const data = response.data;
+        console.log(data);
         return data.project;
       }
     } catch (error) {
-      throw new Error("Failed to add Project");
+      throw new Error("Failed to delete Project");
     }
   }
 );
@@ -157,7 +158,7 @@ const projectSlice = createSlice({
       })
       .addCase(fetchAllProjects.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.projectError = action.error.message;
       })
 
       .addCase(addProjectAsync.pending, (state) => {
@@ -170,7 +171,7 @@ const projectSlice = createSlice({
       })
       .addCase(addProjectAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.projectError = action.error.message;
       })
       .addCase(updateProjectAsync.pending, (state) => {
         state.status = "loading";
@@ -178,15 +179,16 @@ const projectSlice = createSlice({
       .addCase(updateProjectAsync.fulfilled, (state, action) => {
         state.status = "success";
         const index = state.projects.findIndex(
-          (project) => project._id === action.payload._id
+          (project) => project?._id === action.payload?._id
         );
         if (index !== -1) {
           state.projects[index] = action.payload;
         }
+        toast.success("Project updated successfully");
       })
       .addCase(updateProjectAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.projectError = action.error.message;
       })
       .addCase(deleteProjectAsync.pending, (state) => {
         state.status = "loading";
@@ -196,10 +198,11 @@ const projectSlice = createSlice({
         state.projects = state.projects.filter(
           (project) => project._id !== action.payload._id
         );
+        toast.success("Project deleted successfully");
       })
       .addCase(deleteProjectAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.projectError = action.error.message;
       })
 
       .addCase(projectByIdAsync.pending, (state) => {
@@ -211,7 +214,7 @@ const projectSlice = createSlice({
       })
       .addCase(projectByIdAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.projectError = action.error.message;
       });
   },
 });

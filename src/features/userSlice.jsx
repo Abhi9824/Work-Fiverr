@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from "../utils/baseUrl";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 const api = `${BASE_URL}/users`;
 export const signupUser = createAsyncThunk("user/signup", async (userData) => {
   try {
@@ -96,7 +95,7 @@ const userSlice = createSlice({
   },
   reducers: {
     logoutUser: (state) => {
-      localStorage.removeItem("token"); 
+      localStorage.removeItem("token");
       state.token = null;
       state.user = {};
       state.isLoggedIn = false;
