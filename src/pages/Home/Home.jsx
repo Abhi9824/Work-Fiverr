@@ -24,13 +24,10 @@ const { calculateDueDate } = require("../../utils/dateFormat");
 
 const Home = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { projects, projectStatus } = useSelector((state) => state.project);
+  const { projects } = useSelector((state) => state.project);
   const { tasks, taskStatus } = useSelector((state) => state.task);
-  const { user, status, users, isLoggedIn } = useSelector(
-    (state) => state.user
-  );
-  const { teams, teamStatus } = useSelector((state) => state.team);
+  const { user, users, isLoggedIn } = useSelector((state) => state.user);
+  const { teams } = useSelector((state) => state.team);
   const { tags, tagsStatus } = useSelector((state) => state.tags);
 
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -99,7 +96,7 @@ const Home = () => {
       !stats ||
       !tag
     ) {
-      console.log("Missing required fields");
+      console.error("Missing required fields");
       return;
     }
     const taskData = {
@@ -195,37 +192,37 @@ const Home = () => {
                   ? project?.createdBy?._id
                   : project?.createdBy;
               return (
-                <div className="col-md-4 mb-3" key={project?._id}>
-                  <div className="card mb-3">
+                <div className="col-md-4 mb-4" key={project?._id}>
+                  <div className="card project-card h-100 border-0">
                     <div className="card-body">
                       <Link
                         to={`/projectDetails/${project?._id}`}
-                        className="card-link"
+                        className="text-decoration-none text-dark"
                         state={project?.name}
                       >
-                        <h5>{project?.name}</h5>
-                        <p className="fw-light">{project?.description}</p>
+                        <h5 className="fw-bold mb-2 project-name">
+                          {project?.name}
+                        </h5>
+                        <p className="fw-light text-muted mb-0 project-description">
+                          {project?.description}
+                        </p>
                       </Link>
-                      <div className="d-flex justify-content-between mt-3 gap-2">
+                      <div className="d-flex justify-content-end gap-2 mt-3">
                         {isLoggedIn &&
                           String(createdById) === String(user?._id) && (
                             <>
-                              <div>
-                                <button
-                                  onClick={() => handleEdit(project?._id)}
-                                  className="editBtn"
-                                >
-                                  <BiEdit className="icon" />
-                                </button>
-                              </div>
-                              <div>
-                                <button
-                                  className="editBtn"
-                                  onClick={() => handleDelete(project?._id)}
-                                >
-                                  <MdDeleteOutline className="icon" />
-                                </button>
-                              </div>
+                              <button
+                                onClick={() => handleEdit(project?._id)}
+                                className="btn btn-sm icon-btn"
+                              >
+                                <BiEdit />
+                              </button>
+                              <button
+                                className="btn btn-sm icon-btn"
+                                onClick={() => handleDelete(project?._id)}
+                              >
+                                <MdDeleteOutline />
+                              </button>
                             </>
                           )}
                       </div>
@@ -241,7 +238,66 @@ const Home = () => {
             </button>
           </div>
 
-          <div className="task-content">
+          <div className="task-content mt-4">
+            <h4 className="mb-4 fw-bold">📋 My Tasks</h4>
+            {user && user?.tasks && user?.tasks?.length > 0 ? (
+              <div className="table-responsive shadow rounded-4 overflow-hidden">
+                <table className="table custom-task-table mb-0">
+                  <thead className="table-header text-white">
+                    <tr>
+                      <th scope="col">Task Name</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Owners</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {user?.tasks?.map((task) => {
+                      const dueDate = calculateDueDate(
+                        task?.createdAt,
+                        task?.timeToComplete
+                      );
+                      return (
+                        <tr key={task?._id}>
+                          <td>
+                            <Link
+                              to={`/taskDetails/${task?._id}`}
+                              className="text-decoration-none text-dark fw-semibold hover-highlight"
+                            >
+                              {task?.name}
+                            </Link>
+                          </td>
+                          <td>{dueDate}</td>
+                          <td>
+                            {task?.owners?.map((owner, index) => (
+                              <span key={owner._id}>
+                                <Link
+                                  to={`/profile/${owner?._id}`}
+                                  className="text-decoration-none text-secondary fw-medium"
+                                >
+                                  {owner?.name}
+                                </Link>
+                                {index < task?.owners?.length - 1 && ", "}
+                              </span>
+                            ))}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="text-muted">No tasks available</p>
+            )}
+
+            <div className="mt-4">
+              <button onClick={toggleTaskModal} className="addProjectBtn">
+                Add New Task
+              </button>
+            </div>
+          </div>
+
+          {/* <div className="task-content">
             <h4>My Tasks:</h4>
             {user && user?.tasks && user?.tasks?.length > 0 ? (
               <table className="table table-bordered table-striped">
@@ -302,13 +358,13 @@ const Home = () => {
                 Add New Task
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {taskModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
+            <div className="modal-content modal-task">
               <div className="modal-header">
                 <h5 className="modal-title">Add New Task</h5>
                 <button

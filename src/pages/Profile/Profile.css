@@ -1,3 +1,43 @@
 .details{
     font-size: 1.2rem;
 }
+.profile{
+    background: var(--main-gradient);
+}
+.addProjectBtn {
+    background: linear-gradient(135deg, #6a11cb, #2575fc); 
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 16px rgba(106, 17, 203, 0.3); 
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .addProjectBtn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.4s ease-in-out;
+    z-index: 0;
+  }
+  
+  .addProjectBtn:hover::before {
+    left: 0;
+  }
+  
+  .addProjectBtn:hover {
+    box-shadow: 0 10px 24px rgba(106, 17, 203, 0.4);
+    font-weight: 700;
+    transform: translateY(-2px);
+  }
+  

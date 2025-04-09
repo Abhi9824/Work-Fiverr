@@ -1,0 +1,46 @@
+.resetBtn{
+background: linear-gradient(135deg, #4a1503, #cbbb3ff3); 
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 16px rgba(106, 17, 203, 0.3); 
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.custom-table-wrapper {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .custom-table thead th {
+    background-color: #343a40;
+    color: white;
+    border: none;
+  }
+  
+  .custom-table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: 0.3s;
+  }
+  
+  .custom-table td,
+  .custom-table th {
+    vertical-align: middle;
+  }
+  
+
+

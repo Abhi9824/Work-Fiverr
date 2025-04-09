@@ -153,7 +153,7 @@ const Task = () => {
     dispatch(fetchAllTeams());
 
     dispatch(fetchAllTasks());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="body">
@@ -167,15 +167,17 @@ const Task = () => {
             {tasks?.map((task) => {
               return (
                 <div className="col-md-4 mb-3" key={task?._id}>
-                  <div className="card mb-3">
+                  <div className="card project-card mb-3">
                     <div className="card-body d-flex justify-content-between">
                       <div>
                         <Link
                           to={`/taskDetails/${task?._id}`}
                           className="card-link"
                         >
-                          <h5>{task?.name}</h5>
-                          <p className="fw-light">{task?.team?.name}</p>
+                          <h5 className="project-name">{task?.name}</h5>
+                          <p className="project-description">
+                            {task?.team?.name}
+                          </p>
                         </Link>
                       </div>
                       <div className="d-flex justify-content-between mt-3 gap-2">
@@ -184,14 +186,14 @@ const Task = () => {
                             <div>
                               <button
                                 onClick={() => handleEdit(task?._id)}
-                                className="editBtn"
+                                className="icon-btn"
                               >
                                 <BiEdit className="icon" />
                               </button>
                             </div>
                             <div>
                               <button
-                                className="editBtn"
+                                className="icon-btn"
                                 onClick={() => handleDelete(task?._id)}
                               >
                                 <MdDeleteOutline className="icon" />
@@ -217,7 +219,7 @@ const Task = () => {
       {taskModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
+            <div className="modal-content modal-task">
               <div className="modal-header">
                 <h5 className="modal-title">Add New Task</h5>
                 <button
@@ -412,7 +414,7 @@ const Task = () => {
       {showEditModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content">
+            <div className="modal-content modal-task">
               <div className="modal-header">
                 <h5 className="modal-title">Edit Task</h5>
                 <button

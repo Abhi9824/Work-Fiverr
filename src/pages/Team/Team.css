@@ -6,34 +6,46 @@
   }
 /* Modal */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(113, 114, 114, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(113, 114, 114, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; 
   }
   
   /* Modal dialog */
-  .modal-dialog {
-    max-width: 500px;          
-    width: 100%;               
-    margin: 0;                
-    position:absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.modal-dialog {
+  max-height: 90vh;
+  max-width: 500px;          
+  width: 100%;               
+  margin: 0;                
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
   
-  /* Modal content */
-  .modal-content {
-    background-color: var(--primary-color); 
-    border-radius: 8px; 
-    padding: 20px; 
-    background-color: var(--light-color);
-    color: white;
-  }
+ /* Modal content */
+.modal-content {
+  background: var(--main-gradient) !important; 
+  border-radius: 8px; 
+  padding: 20px;
+  color: white;
+  z-index: 2;
+  max-height: 850px;
+  overflow-y: auto;
+ 
+ }
+
+
+.submitBtn{
+  background: linear-gradient(135deg, #6a11cb, #86a4d8);
+  z-index: 2; 
+
+}

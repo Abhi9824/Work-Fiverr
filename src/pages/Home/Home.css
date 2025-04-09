@@ -28,19 +28,41 @@
     padding:2rem 0rem;
 }
 
-.addProjectBtn{
-    background-color: var(--secondary-color); 
-    color: var(--text-color);
-    border: none;
-    box-shadow: var(--shadow);
-    padding: 1rem;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: ease 0.2s;
+.addProjectBtn {
+  background: linear-gradient(135deg, #6a11cb, #2575fc); 
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 16px rgba(106, 17, 203, 0.3); 
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
-.addProjectBtn:hover{
-    box-shadow: var(--hover-shadow);
-    font-weight: 700;
+
+.addProjectBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.4s ease-in-out;
+  z-index: 0;
+}
+
+.addProjectBtn:hover::before {
+  left: 0;
+}
+
+.addProjectBtn:hover {
+  box-shadow: 0 10px 24px rgba(106, 17, 203, 0.4);
+  font-weight: 700;
+  transform: translateY(-2px);
 }
 
 Link{
@@ -65,6 +87,7 @@ Link{
   
   /* Modal dialog */
   .modal-dialog {
+    max-height: 90vh;
     max-width: 500px;          
     width: 100%;               
     margin: 0;                
@@ -77,16 +100,122 @@ Link{
   
   /* Modal content */
   .modal-content {
-    background-color: var(--primary-color); 
+    background: var(--main-gradient) !important; 
     border-radius: 8px; 
     padding: 20px;
-    background-color: var(--light-color);
     color: white;
+    z-index: 2;
+    max-height: 850px;
+    overflow-y: auto;
+   
+  }
+  .modal-task {
+    top: 120px; 
   }
   
   .submitBtn{
-    background-color: var(--primary-color); 
-    color: var(--text-color);
-    border: none;
-    box-shadow: var(--shadow);
+    background: linear-gradient(135deg, #6a11cb, #86a4d8);
+    z-index: 2; 
+  
   }
+
+.project-card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    position: relative;
+  }
+  
+.project-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+    background: linear-gradient(135deg, #e0f7fa, #f3e5f5);
+  }
+  
+.project-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 80%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 0;
+  }
+  
+.project-card:hover::before {
+    opacity: 1;
+  }
+  
+.project-card .card-body {
+    position: relative;
+    z-index: 1;
+  }
+  
+
+.icon-btn {
+    background-color:var(--text-background);
+    border: none;
+    color: #333;
+    transition: background-color 0.3s ease;
+    border-radius: 50%;
+    padding: 6px 10px;
+  }
+  
+.icon-btn:hover {
+    background-color: #d1c4e9;
+    color: #000;
+}
+  
+
+.project-name{
+  color: var(--text-heading) !important;
+}
+
+.project-description {
+  color: var(--text-desc);
+  font-size: 16px;
+  font-weight: 600 !important;
+}
+
+.custom-task-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+.custom-task-table thead {
+  background: linear-gradient(to right, #4e73df, #224abe);
+}
+
+.custom-task-table th,
+.custom-task-table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  text-align: left;
+}
+
+.custom-task-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.custom-task-table tbody tr:hover {
+  background-color: #eef2fb;
+}
+
+.hover-highlight:hover {
+  color: #2a4fff;
+  transition: color 0.2s ease-in-out;
+}
+
+.table-header th {
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+

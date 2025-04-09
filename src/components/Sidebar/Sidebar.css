@@ -1,6 +1,7 @@
 .sideBar{
     grid-area: sidebar;
-    background-color: var(--light-color);
+    /* background-color: var(--side-color); */
+    background: var(--side-gradient) !important;
     color: white;
     padding: 2rem ;
     font-size: 1.3rem;
@@ -30,7 +31,7 @@
 }
 
 .side-items:hover{
-    background-color: rgb(165, 165, 163);
+    background-color: rgba(138, 101, 140, 0.125);
     color: black;
     cursor: pointer;
     font-size: 1.4rem;

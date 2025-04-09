@@ -4,10 +4,8 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import { BiEdit } from "react-icons/bi";
-import { MdDeleteOutline } from "react-icons/md";
 import "./Team.css";
 import { updateTeamAsync } from "../../features/teamSlice";
-import { deleteTaskAsync } from "../../features/taskSlice";
 
 const Team = () => {
   const dispatch = useDispatch();
@@ -89,15 +87,15 @@ const Team = () => {
           <div className="content-desc d-flex row py-3 col-md-12">
             {teams?.map((team) => (
               <div className="col-md-4 mb-3" key={team._id}>
-                <div className="card mb-3">
+                <div className="card project-card mb-3">
                   <div className="card-body d-flex justify-content-between">
                     <Link
                       to={`/teamDetails/${team._id}`}
                       className="card-link"
                       state={team}
                     >
-                      <h5>{team.name}</h5>
-                      <p className="fw-light">{team.description}</p>
+                      <h5 className="project-name">{team.name}</h5>
+                      <p className="project-description">{team.description}</p>
                     </Link>
                     <div className="d-flex justify-content-between mt-3 gap-2">
                       {team?.members?.some((m) => m._id === user?._id) && (
@@ -105,7 +103,7 @@ const Team = () => {
                           <div>
                             <button
                               onClick={() => handleEdit(team?._id)}
-                              className="editBtn"
+                              className="icon-btn"
                             >
                               <BiEdit className="icon" />
                             </button>
@@ -125,6 +123,7 @@ const Team = () => {
           </div>
         </div>
       </div>
+
       {showProjectModal && (
         <div className="modal d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-centered" role="document">

@@ -3,7 +3,7 @@
     text-decoration: none;
     text-shadow: var(--shadow);
     color:var(--text-color) ;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: var(--font-bold);
     
 }
@@ -16,9 +16,25 @@
     position: sticky;
     top: 0;
     z-index: 3;
+    background: var(--main-gradient);
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2)
     
 }
 
+/* .navbar {
+    padding: 1.3rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-area: nav;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: linear-gradient(135deg, #d3a4f7, #a18cd1); /* 💜 light purple gradient */
+    /* border-radius: 0; 
+} */
+  
 .nav-header a {
     text-decoration: none;
     color: var(--text-color);

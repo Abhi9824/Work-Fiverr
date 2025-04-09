@@ -76,19 +76,19 @@ const TaskReport = () => {
                 {/* Buttons to toggle between project, owner, and team */}
                 <div className="py-4">
                   <button
-                    className="btn btn-primary mx-2"
+                    className="btn submitBtn mx-2"
                     onClick={() => setSelectedGroup("project")}
                   >
                     By Project
                   </button>
                   <button
-                    className="btn btn-primary mx-2"
+                    className="btn submitBtn mx-2"
                     onClick={() => setSelectedGroup("owner")}
                   >
                     By Owner
                   </button>
                   <button
-                    className="btn btn-primary mx-2"
+                    className="btn submitBtn mx-2"
                     onClick={() => setSelectedGroup("team")}
                   >
                     By Team

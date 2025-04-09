@@ -26,7 +26,7 @@ const Profile = () => {
           <h2 className="main-content-heading">Profile Data</h2>
           <div className="d-flex justify-content-center align-items-center py-3 col-md-12">
             <div className="col-md-6 py-4">
-              <div className="card mb-3">
+              <div className="card  profile mb-3">
                 <div className="card-body d-flex flex-column">
                   <p className="details">Name: {profileData?.name}</p>
                   <p className="details">Email: {profileData?.email}</p>
@@ -45,7 +45,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="d-flex justify-content-center">
-            <button onClick={logoutHandler} className="btn btn-primary">
+            <button onClick={logoutHandler} className="addProjectBtn">
               Logout
             </button>
           </div>

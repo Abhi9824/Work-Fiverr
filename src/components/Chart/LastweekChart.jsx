@@ -32,10 +32,10 @@ const LastweekChart = ({ data }) => {
       {
         label: "Tasks Completed Days",
         data: data?.map((item) => item.timeToComplete),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
-        barThickness: 50,
+        backgroundColor: "rgba(16, 80, 192, 0.6)",
+        borderColor: "rgb(115, 194, 236)",
+        borderWidth: 2,
+        barThickness: 60,
       },
     ],
   };
@@ -47,30 +47,35 @@ const LastweekChart = ({ data }) => {
         display: true,
         position: "top",
         labels: {
-          color: "white", 
+          color: "black",
         },
       },
       title: {
         display: true,
-        color: "white", 
+        color: "white",
       },
     },
     scales: {
       x: {
         ticks: {
-          color: "white", 
+          color: "black",
+        },
+        grid: {
+          display: false,
         },
         border: {
-          color: "white", 
+          color: "black",
         },
       },
       y: {
         ticks: {
-          color: "white", 
+          color: "black",
         },
-
+        grid: {
+          display: false,
+        },
         border: {
-          color: "white", 
+          color: "black",
         },
       },
     },

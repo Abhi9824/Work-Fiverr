@@ -126,7 +126,6 @@ const ProjectDetails = () => {
                     <div className="py-2 d-flex">
                       <label htmlFor="owners">Owners:</label>
                       {users?.map((user) => (
-                        //owners
                         <div key={user._id} className="mx-2">
                           <input
                             type="checkbox"
@@ -192,12 +191,12 @@ const ProjectDetails = () => {
                     </div>
                   </div>
                   <div className="mt-2 d-flex justify-content-between align-items-center gap-2">
-                    <button type="submit" className="btn btn-primary">
+                    <button type="submit" className="btn addProjectBtn">
                       Filter
                     </button>
                     <button
                       type="button"
-                      className="btn btn-secondary"
+                      className="btn resetBtn"
                       onClick={resetHandler}
                     >
                       Reset
@@ -210,7 +209,55 @@ const ProjectDetails = () => {
             {/* Tasks List Section */}
             <h4 className="pt-4">Tasks List:</h4>
             {filtered?.length > 0 ? (
-              <table className="table">
+              /* <div className="table-responsive custom-table-wrapper"> */
+              <table className="table table-bordered table-hover shadow-sm rounded custom-table">
+                <thead className="table-dark">
+                  <tr>
+                    <th className="fs-5 fw-bold">Task Name</th>
+                    <th className="fs-5 fw-bold">Status</th>
+                    <th className="fs-5 fw-bold">Due Date</th>
+                    <th className="fs-5 fw-bold">Owners</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((task) => {
+                    const dueDate = calculateDueDate(
+                      task.createdAt,
+                      task.timeToComplete
+                    );
+                    return (
+                      <tr key={task._id}>
+                        <td>
+                          <Link
+                            to={`/taskDetails/${task._id}`}
+                            className="text-decoration-none text-primary fw-semibold"
+                          >
+                            {task.name}
+                          </Link>
+                        </td>
+                        <td className="text-capitalize">{task.status}</td>
+                        <td>{dueDate}</td>
+                        <td>
+                          {task.owners.map((o, index) => (
+                            <span key={o._id}>
+                              <Link
+                                to={`/profile/${o._id}`}
+                                className="text-decoration-none text-secondary fw-medium"
+                              >
+                                {o.name}
+                              </Link>
+                              {index < task.owners.length - 1 && ", "}
+                            </span>
+                          ))}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              /* </div> */
+              /* <table className="table">
                 <thead>
                   <tr>
                     <th className="fs-5 fw-bold">Task Name</th>
@@ -254,8 +301,7 @@ const ProjectDetails = () => {
                     );
                   })}
                 </tbody>
-              </table>
-            ) : (
+              </table> */
               <p>No tasks available for this project.</p>
             )}
           </div>
