@@ -1,70 +1,168 @@
-# Getting Started with Create React App
+# 📘 WorkFiverr — Task & Project Management App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**WorkFiverr** is a full-featured project and task management platform built using the **MERN stack** (MongoDB, Express, React, Node.js) with **Redux Toolkit** for global state management. It supports task assignment, team/project views, reporting dashboards, and advanced filtering — designed for managers and team members to collaboratively manage workloads and track project progress.
 
-## Available Scripts
+## 🌐 Live Demo  
+(https://work-fiverr-frontend.vercel.app)
 
-In the project directory, you can run:
+## 🔗 Repositories
+- **Frontend Repo**: (https://github.com/Abhi9824/Work-Fiverr)
+- **Backend Repo**: (https://github.com/Abhi9824/Work-Fiverr-backend)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🚀 Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 📦 Frontend Setup
 
-### `npm test`
+1. Clone the repository  
+   `https://github.com/Abhi9824/Work-Fiverr.git`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Install dependencies  
+   `npm install`
 
-### `npm run build`
+3. Run the app  
+   `npm run dev`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 🔧 Backend Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the backend repo  
+   `https://github.com/Abhi9824/Work-Fiverr-backend.git`
 
-### `npm run eject`
+2. Install dependencies  
+   `npm install`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Start the server  
+   `node index.js`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔐 Backend .env Configuration
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Create a `.env` file in `/workfiverr-backend` and add the following:
 
-## Learn More
+```
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## ✨ Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 🔐 Authentication
 
-### Analyzing the Bundle Size
+- JWT-based authentication for secure login/signup  
+- Protected routes and user authorization  
+- Persistent login via localStorage  
+- Logout clears token and redirects user  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 📝 Task Management
 
-### Making a Progressive Web App
+- Create tasks with name, tags, team, project, owners, time estimates, status  
+- Filter tasks by team, project, owner, tags, and status  
+- Sort tasks by due dates or priorities  
+- URL-based filtering and search support  
+- Update or delete any task  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 📊 Reporting & Visualization
 
-### Advanced Configuration
+- Total work completed last week (bar chart)  
+- Pending work across teams/projects (bar chart)  
+- Task stats by owner/project/team (pie charts)  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 📁 Project & Team View
 
-### Deployment
+- View all tasks grouped under each project or team  
+- Filter tasks within a specific project or team  
+- Sorting options based on deadlines or owners  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### 👥 User & Team Management
 
-### `npm run build` fails to minify
+- Signup/Login with secure credentials  
+- Authenticated user info retrieved on login  
+- Create and manage teams  
+- Assign team members as owners to tasks  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🧩 Backend API Overview
+
+### 🔐 Auth Routes
+
+- `POST /auth/signup` — Register a new user  
+- `POST /auth/login` — Login user and return JWT  
+- `GET /auth/me` — Fetch logged-in user details  
+
+### 📝 Task Routes
+
+- `POST /tasks` — Create a new task  
+- `GET /tasks` — Fetch all tasks (filterable by owner, project, status, etc.)  
+- `POST /tasks/:id` — Update task status or details  
+- `DELETE /tasks/:id` — Delete a task  
+
+### 📁 Project Routes
+
+- `POST /projects` — Create a new project  
+- `GET /projects` — Get list of all projects  
+
+### 👥 Team Routes
+
+- `POST /teams` — Add a new team  
+- `GET /teams` — Get all teams  
+
+### 🏷️ Tag Routes
+
+- `POST /tags` — Create a new tag  
+- `GET /tags` — Get all tags  
+
+### 📊 Report Routes
+
+- `GET /report/last-week` — Tasks completed last week  
+- `GET /report/pending` — Total pending work (timeToComplete)  
+- `GET /report/closed-tasks` — Tasks closed by team/owner/project  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React.js, Redux Toolkit, React Router DOM, Axios, Chart.js  
+- **Backend**: Node.js, Express.js, MongoDB with Mongoose, JWT Auth, bcrypt  
+- **Database**: MongoDB  
+
+---
+
+## 📁 Project Structure
+
+```
+workfiverr-frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── features/
+│   └── App.jsx
+
+workfiverr-backend/
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+└── index.js
+```
+
+---
+
+## 🙌 Author
+
+Built with ❤️ by **Abhijit Chanda** — Open to collaboration and feedback!
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+
